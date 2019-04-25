@@ -1,6 +1,9 @@
 
 An initial implementation of a web client for the airvoy platform.
 
+
+-----------------------------------------------------------------------------------------------------
+
 To run this project first install all dependencies:
 
 ### `npm install`
@@ -8,8 +11,6 @@ To run this project first install all dependencies:
 Then you can run:
 
 ### `npm start`
-
------------------------------------------------------------------------------------------------------
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
