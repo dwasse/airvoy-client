@@ -24,18 +24,25 @@ class BidsBook extends Component {
             style={{
               display: index > 23 ? "none" : "initial",
               position: "absolute",
-              right: "0px",
+              left: "0px",
               background: "rgba(82,108,46, 0.3)",
               width: `calc(${(
                 (100 * row.total) /
                 self.props.orderBookBids[self.props.orderBookBids.length - 1]
                   .total
               ).toFixed(0) * self.state.zoom}% - 20px)`,
-              height: "37px"
+              height: "54px"
             }}
           />
-          <td className="text-right">{row.amount}</td>
-          <td className="text-right">{row.price}</td>
+          <td className="text-right">
+            <h4>{row.price}</h4>
+          </td>
+          <td className="text-right">
+            <h4>{row.amount}</h4>
+          </td>
+          <td className="text-right">
+            <h4>{row.total}</h4>
+          </td>
         </tr>
       );
     });
@@ -43,24 +50,10 @@ class BidsBook extends Component {
 
   componentDidMount() {}
 
-  zoomOut() {
-    this.setState({ zoom: this.state.zoom - 0.2 });
-  }
-
-  zoomIn() {
-    this.setState({ zoom: this.state.zoom + 0.2 });
-  }
-
   render() {
     return (
       <div>
         <Table responsive>
-          <thead>
-            <tr>
-              <th className="text-right">Amount</th>
-              <th className="text-right">Price</th>
-            </tr>
-          </thead>
           <tbody>{this.renderBidRows()}</tbody>
         </Table>
       </div>

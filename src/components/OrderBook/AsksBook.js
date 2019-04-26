@@ -32,27 +32,24 @@ class AsksBook extends Component {
                 self.props.orderBookAsks[self.props.orderBookAsks.length - 1]
                   .total
               ).toFixed(0) * self.state.zoom}% - 20px)`,
-              height: "37px"
+              height: "54px"
             }}
           />
-          <td className="text-right">{row.price}</td>
-          <td className="text-right">{row.total}</td>
-          <td className="text-right">{amountAbs}</td>
-          <td className="text-center">{row.count}</td>
+          <td className="text-right">
+            <h4>{row.price}</h4>
+          </td>
+          <td className="text-right">
+            <h4>{amountAbs}</h4>
+          </td>
+          <td className="text-right">
+            <h4>{row.total}</h4>
+          </td>
         </tr>
       );
     });
   }
 
   componentDidMount() {}
-
-  zoomOut() {
-    this.setState({ zoom: this.state.zoom - 0.2 });
-  }
-
-  zoomIn() {
-    this.setState({ zoom: this.state.zoom + 0.2 });
-  }
 
   render() {
     return (
@@ -62,9 +59,14 @@ class AsksBook extends Component {
             <tr>
               <th />
               <th className="text-right" style={{ width: "50px" }}>
-                Price
+                <h4>Price</h4>
               </th>
-              <th className="text-right">Amount</th>
+              <th className="text-right">
+                <h4>Amount</h4>
+              </th>
+              <th className="text-right">
+                <h4>Total</h4>
+              </th>
             </tr>
           </thead>
           <tbody>{this.renderAskRows()}</tbody>

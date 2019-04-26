@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 
@@ -18,8 +19,8 @@ import updateAsksOrderBook from "../store/OrderBook/actions/update_asks";
 import clearAsksOrderBook from "../store/OrderBook/actions/clear_asks";
 import updateTrades from "../store/Trades/actions/update_trades";
 import { bindActionCreators } from "redux";
-
 import "../css/OrderBook.css";
+// require("logo_1.png");
 
 // const websocketURL = "wss://api.bitfinex.com/ws/2";
 const websocketURL = "ws://localhost:9001";
@@ -33,13 +34,11 @@ class OrderBook extends Component {
     this.state = {
       marketName: "Trump impeachment 2020",
       marketSymbol: "TRUMP",
-      connectionReady: true,
-      isConnected: false,
-      pres: "P0",
       volume24h: 0,
       lastPrice: 0,
       priceChange: 0
     };
+    this.subscribeToAll();
   }
 
   subscribeToAll() {
@@ -51,11 +50,27 @@ class OrderBook extends Component {
       console.log(msg);
       var responseText = "getMarket " + marketId;
       ws.send(responseText);
-      self.setState({ connectionReady: true });
     }
     function onMessage(msg) {
       payloadData = JSON.parse(msg.data);
-      console.log("Received payload data: " + JSON.stringify(payloadData));
+      for (var i = 0; i < payloadData.length; i++) {
+        var entry = payloadData[i];
+        if (entry["Type"] === "Order") {
+          if (parseFloat(entry["Amount"]) > 0) {
+            console.log("Adding bid: " + JSON.stringify(entry));
+            self.props.updateBidsOrderBook({
+              price: parseFloat(entry["Price"].toFixed(3)),
+              amount: parseFloat(entry["Amount"]).toFixed(3)
+            });
+          } else if (parseFloat(entry["Amount"]) < 0) {
+            console.log("Adding ask: " + JSON.stringify(entry));
+            self.props.updateAsksOrderBook({
+              price: parseFloat(entry["Price"].toFixed(3)),
+              amount: parseFloat(entry["Amount"]).toFixed(3)
+            });
+          }
+        }
+      }
     }
     function onClose(msg) {
       console.log("Connection closed.");
@@ -70,12 +85,10 @@ class OrderBook extends Component {
     ws.onmessage = onMessage;
     ws.onclose = onClose;
     ws.onerror = onError;
-    this.setState({ isConnected: true });
   }
 
   closeConnection() {
     ws.close();
-    this.setState({ isConnected: false });
   }
 
   formmatNumberWithCommas(currentNumber) {
@@ -94,11 +107,17 @@ class OrderBook extends Component {
     return (
       <Container fluid={true}>
         <Row>
-          <Col lg={12} className="buttons-container text-left">
+          <Col lg={4} className="buttons-container text-left">
+            <img src={"logo_1.png"} alt="Logo" />
             <div className="ticker-container text-left">
-              <h3>
-                {this.state.marketName} [{this.state.marketSymbol}]
-              </h3>
+              <Dropdown>
+                <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                  {this.state.marketName} [{this.state.marketSymbol}]
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item href="#action-1">Another market</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
               <p>
                 Last Price:{" "}
                 {this.formmatNumberWithCommas(this.state.lastPrice.toFixed(3))}{" "}
@@ -110,47 +129,35 @@ class OrderBook extends Component {
                 {this.state.priceChange.toFixed(2)}%
               </p>
             </div>
-            <ButtonToolbar>
-              <Button
-                variant="dark"
-                disabled={!this.state.connectionReady || this.state.isConnected}
-                onClick={this.subscribeToAll.bind(this)}
-              >
-                Connect
-              </Button>
-              <Button
-                variant="dark"
-                disabled={!this.state.isConnected}
-                onClick={this.closeConnection.bind(this)}
-              >
-                Disconnect
-              </Button>
-            </ButtonToolbar>
           </Col>
         </Row>
         <Row>
-          <Col lg={9}>
-            <Container fluid={true}>
+          <Col lg={5}>
+            <Container>
               <Row>
                 <Col lg={12}>
                   <h3 className="text-left">Order Book</h3>
                 </Col>
-                <Col lg={6} className="bids-container">
-                  <BidsBook orderBookBids={this.props.orderBookBids} />
-                </Col>
+              </Row>
+              <Row>
                 <Col lg={6} className="asks-container">
                   <div className="depth-bars-asks-container" />
                   <AsksBook orderBookAsks={this.props.orderBookAsks} />
                 </Col>
               </Row>
+              <Row>
+                <Col lg={6} className="bids-container">
+                  <BidsBook orderBookBids={this.props.orderBookBids} />
+                </Col>
+              </Row>
             </Container>
           </Col>
-          <Col lg={3}>
+          <Col lg={6}>
             <Row>
               <Col lg={12}>
                 <h3 className="text-left">Market Trades</h3>
               </Col>
-              <Col lg={12}>
+              <Col lg={4}>
                 <TradesList tradesList={this.props.tradesList} />
               </Col>
             </Row>

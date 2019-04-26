@@ -27,9 +27,15 @@ class TradesList extends Component {
 
       return (
         <tr key={uniqueId} className={tradeType}>
-          <td className="text-right">{row.formattedTimestamp}</td>
-          <td className="text-right">{row.price}</td>
-          <td className="text-right">{amountAbs}</td>
+          <td className="text-right">
+            <h4>{row.formattedTimestamp}</h4>
+          </td>
+          <td className="text-right">
+            <h4>{row.price}</h4>
+          </td>
+          <td className="text-right">
+            <h4>{amountAbs}</h4>
+          </td>
         </tr>
       );
     });
@@ -42,9 +48,15 @@ class TradesList extends Component {
       <Table responsive>
         <thead>
           <tr>
-            <th className="text-right">Time</th>
-            <th className="text-right">Price</th>
-            <th className="text-right">Amount</th>
+            <th className="text-right">
+              <h4>Time</h4>
+            </th>
+            <th className="text-right">
+              <h4>Price</h4>
+            </th>
+            <th className="text-right">
+              <h4>Amount</h4>
+            </th>
           </tr>
         </thead>
         <tbody>{this.renderTradesRows()}</tbody>
