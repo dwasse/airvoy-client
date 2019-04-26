@@ -1,5 +1,8 @@
 
-(ReactJS, Redux) This is a simple cryto currency order book, trades and ticker widgets using the Bitfinex API v2.
+An initial implementation of a web client for the airvoy platform.
+
+
+-----------------------------------------------------------------------------------------------------
 
 To run this project first install all dependencies:
 
@@ -8,8 +11,6 @@ To run this project first install all dependencies:
 Then you can run:
 
 ### `npm start`
-
------------------------------------------------------------------------------------------------------
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
