@@ -21,6 +21,12 @@ h4 {
   font-size: 20;
 }
 
+.orderbook {
+  color: white;
+  font-family: Inconsolata, monospace;
+  font-size: 10;
+}
+
 .ticker-container h3,
 .ticker-container p {
   color: white;
@@ -32,7 +38,7 @@ h4 {
 }
 
 .table-responsive {
-  height: 200px !important;
+  height: 800px !important;
   overflow-y: hidden !important;
 }
 

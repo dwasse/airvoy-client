@@ -14,6 +14,7 @@ class AsksBook extends Component {
 
   renderAskRows() {
     let self = this;
+    console.log("BIDS: " + JSON.stringify(this.props.orderBookBids));
     if (!this.props.orderBookAsks) {
       return <h2>Loading...</h2>;
     }

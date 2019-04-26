@@ -10,27 +10,23 @@ import Sockette from "sockette";
 
 import BidsBook from "../components/OrderBook/BidsBook";
 import AsksBook from "../components/OrderBook/AsksBook";
-import Orders from "../components/Orders";
+import OrderBook from "../components/Orders";
 import TradesList from "../components/Trades/TradesList";
 
 import { connect } from "react-redux";
 import updateBidsOrderBook from "../store/OrderBook/actions/update_bids";
 import clearBidsOrderBook from "../store/OrderBook/actions/clear_bids";
 import updateAsksOrderBook from "../store/OrderBook/actions/update_asks";
-import updateOrders from "../store/OrderBook/actions/update_orders";
-import clearOrders from "../store/OrderBook/actions/clear_orders";
 import clearAsksOrderBook from "../store/OrderBook/actions/clear_asks";
 import updateTrades from "../store/Trades/actions/update_trades";
 import { bindActionCreators } from "redux";
 import "../css/OrderBook.css";
-// require("logo_1.png");
 
-// const websocketURL = "wss://api.bitfinex.com/ws/2";
 const websocketURL = "ws://localhost:9001";
 var marketId = 0;
 
 let ws;
-class OrderBook extends Component {
+class OrderBookContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -42,7 +38,6 @@ class OrderBook extends Component {
       priceChange: 0
     };
     this.subscribeToAll();
-    console.log("Props: " + JSON.stringify(props));
   }
 
   subscribeToAll() {
@@ -60,11 +55,19 @@ class OrderBook extends Component {
       for (var i = 0; i < payloadData.length; i++) {
         var entry = payloadData[i];
         if (entry["Type"] === "Order") {
-          console.log("Adding order: " + JSON.stringify(entry));
-          self.props.updateOrders({
-            price: parseFloat(entry["Price"].toFixed(3)),
-            amount: parseFloat(entry["Amount"].toFixed(3))
-          });
+          if (parseFloat(entry["Amount"]) > 0) {
+            console.log("Adding bid: " + JSON.stringify(entry));
+            self.props.updateBidsOrderBook({
+              price: parseFloat(entry["Price"].toFixed(3)),
+              amount: parseFloat(entry["Amount"]).toFixed(3)
+            });
+          } else if (parseFloat(entry["Amount"]) < 0) {
+            console.log("Adding ask: " + JSON.stringify(entry));
+            self.props.updateAsksOrderBook({
+              price: parseFloat(entry["Price"].toFixed(3)),
+              amount: parseFloat(entry["Amount"]).toFixed(3)
+            });
+          }
         }
       }
     }
@@ -137,7 +140,8 @@ class OrderBook extends Component {
               </Row>
               <Row>
                 <Col lg={6} className="asks-container">
-                  <Orders orders={this.props.orders} />
+                  <div className="asks-container" />
+                  <OrderBook />
                 </Col>
               </Row>
               {/* <Row>
@@ -171,7 +175,6 @@ class OrderBook extends Component {
 
 function mapStateToProps(state) {
   return {
-    orders: state.orders,
     orderBookBids: state.orderBookBids,
     orderBookAsks: state.orderBookAsks,
     tradesList: state.tradesList
@@ -181,11 +184,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
-      updateOrders: updateOrders,
       updateAsksOrderBook: updateAsksOrderBook,
       updateBidsOrderBook: updateBidsOrderBook,
       updateTrades: updateTrades,
-      clearOrders: clearOrders,
       clearBidsOrderBook: clearBidsOrderBook,
       clearAsksOrderBook: clearAsksOrderBook
     },
