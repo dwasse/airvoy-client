@@ -134,8 +134,8 @@ class OrderBook extends Component {
           </Col>
         </Row>
         <Row>
-          <Col lg={5}>
-            <Container>
+          <Col>
+            <Container className="orderbook-column">
               <Row>
                 <Col>
                   <h4 className="text-left">Order Book</h4>
@@ -148,12 +148,14 @@ class OrderBook extends Component {
               </Row>
             </Container>
           </Col>
-          <Col lg={7}>
+          <Col className="trades-column">
             <Row>
-              <Col lg={12}>
-                <h3 className="text-left">Market Trades</h3>
+              <Col>
+                <h4 className="text-left">Market Trades</h4>
               </Col>
-              <Col lg={4}>
+            </Row>
+            <Row>
+              <Col className="trades-container">
                 <TradesList tradesList={this.props.tradesList} />
               </Col>
             </Row>

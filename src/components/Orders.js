@@ -54,7 +54,7 @@ class Orders extends Component {
                 right: "0px",
                 background: "rgba(82,108,46, 0.3)",
                 width: `calc(${((100 * row.total) / total).toFixed(0) *
-                  self.state.zoom}% - 20px)`,
+                  self.state.zoom}%)`,
                 height: "36px"
               }}
             />
@@ -79,7 +79,7 @@ class Orders extends Component {
               left: "0px",
               background: "rgba(139,42,2, 0.3)",
               width: `calc(${((100 * row.total) / total).toFixed(0) *
-                self.state.zoom}% - 20px)`,
+                self.state.zoom}%)`,
               height: "36px"
             }}
           />
