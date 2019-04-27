@@ -31,6 +31,12 @@ h5 {
   font-size: 12;
 }
 
+.trades {
+  color: white;
+  font-family: Inconsolata, monospace;
+  font-size: 12;
+}
+
 .market-dropdown {
   font-family: OCR A Std, monospace;
   margin-bottom: 50px;
@@ -41,9 +47,32 @@ h5 {
   color: white;
 }
 
-.asks-container {
+.orderbook-container {
   position: relative;
+  width: 20%;
+  border: 1px solid white;
+  border-radius: 5px;
   /*padding-left: 1px;*/
+}
+
+.orderbook-title {
+  text-align: center;
+}
+
+.bids-row {
+  position: relative;
+}
+
+.bids-row:hover {
+  background: #afbacc;
+}
+
+.asks-row {
+  position: relative;
+}
+
+.asks-row:hover {
+  background: #afbacc;
 }
 
 .table-responsive {
@@ -51,7 +80,7 @@ h5 {
   overflow-y: hidden !important;
 }
 
-.bids-row {
+.spread-row {
   position: relative;
 }
 

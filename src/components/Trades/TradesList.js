@@ -28,13 +28,13 @@ class TradesList extends Component {
       return (
         <tr key={uniqueId} className={tradeType}>
           <td className="text-right">
-            <h4>{row.formattedTimestamp}</h4>
+            <div className="trades">{row.formattedTimestamp}</div>
           </td>
           <td className="text-right">
-            <h4>{row.price}</h4>
+            <div className="trades">{row.price}</div>
           </td>
           <td className="text-right">
-            <h4>{amountAbs}</h4>
+            <div className="trades">{amountAbs}</div>
           </td>
         </tr>
       );
@@ -49,13 +49,13 @@ class TradesList extends Component {
         <thead>
           <tr>
             <th className="text-right">
-              <h4>Time</h4>
+              <div className="trades">Time</div>
             </th>
             <th className="text-right">
-              <h4>Price</h4>
+              <div className="trades">Price</div>
             </th>
             <th className="text-right">
-              <h4>Amount</h4>
+              <div className="trades">Amount</div>
             </th>
           </tr>
         </thead>

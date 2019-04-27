@@ -137,18 +137,18 @@ class OrderBook extends Component {
           <Col lg={5}>
             <Container>
               <Row>
-                <Col lg={12}>
-                  <h3 className="text-left">Order Book</h3>
+                <Col>
+                  <h4 className="text-left">Order Book</h4>
                 </Col>
               </Row>
               <Row>
-                <Col lg={6} className="asks-container">
+                <Col className="orderbook-container">
                   <Orders orders={this.props.orders} />
                 </Col>
               </Row>
             </Container>
           </Col>
-          <Col lg={6}>
+          <Col lg={7}>
             <Row>
               <Col lg={12}>
                 <h3 className="text-left">Market Trades</h3>

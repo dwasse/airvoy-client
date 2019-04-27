@@ -17,6 +17,14 @@ class Orders extends Component {
       return <h2>Loading...</h2>;
     }
     return this.props.orders.map(function(row, index) {
+      // if (this.props.orders[index - 1]) {
+      //   if (row.amount > 0 && this.props.orders[index - 1].amount < 0) {
+      //     // Spread table element
+      //     console.log("Rendering spread");
+      //     var spread = row.price - this.props.orders[index - 1].price;
+      //     return <tr className="spread-row" key={"Spread: " + spread} />;
+      //   }
+      // }
       var askTotal = 0;
       var bidTotal = 0;
       for (var i = 0; i < self.props.orders.length; i++) {
@@ -34,6 +42,7 @@ class Orders extends Component {
           ", this width: " +
           ((100 * row.total) / total).toFixed(0)
       );
+
       if (row.amount > 0) {
         return (
           <tr className="bids-row" key={row.price}>
@@ -42,6 +51,7 @@ class Orders extends Component {
                 display: index > 23 ? "none" : "initial",
                 position: "absolute",
                 left: "0px",
+                right: "0px",
                 background: "rgba(82,108,46, 0.3)",
                 width: `calc(${((100 * row.total) / total).toFixed(0) *
                   self.state.zoom}% - 20px)`,
@@ -84,7 +94,7 @@ class Orders extends Component {
           </td>
         </tr>
       );
-    });
+    }, this);
   }
 
   componentDidMount() {}
@@ -93,25 +103,34 @@ class Orders extends Component {
     return (
       <div>
         <Table responsive>
-          <thead>
+          {/* <thead>
             <tr>
               <th />
               <th className="text-right" style={{ width: "50px" }}>
-                <h5>Price</h5>
+                <div className="orderbook">Price</div>
               </th>
               <th className="text-right">
-                <h5>Amount</h5>
+                <div className="orderbook">Amount</div>
               </th>
               <th className="text-right">
-                <h5>Total</h5>
+                <div className="orderbook">Total</div>
               </th>
             </tr>
-          </thead>
+          </thead> */}
           <tbody>
+            <tr>
+              <th />
+              <th className="text-right" style={{ width: "50px" }}>
+                <div className="orderbook">Price</div>
+              </th>
+              <th className="text-right">
+                <div className="orderbook">Amount</div>
+              </th>
+              <th className="text-right">
+                <div className="orderbook">Total</div>
+              </th>
+            </tr>
             {this.renderOrders()}
-            {/* <tr>
-              <th>{this.renderOrders()}</th>
-            </tr> */}
           </tbody>
         </Table>
       </div>
