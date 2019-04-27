@@ -106,7 +106,7 @@ class OrderBook extends Component {
           <Col lg={4} className="buttons-container text-left">
             <img src={"logo_1.png"} alt="Logo" />
             <div className="ticker-container text-left">
-              <Dropdown>
+              <Dropdown className="market-dropdown">
                 <Dropdown.Toggle variant="secondary" id="dropdown-basic">
                   {this.state.marketName} [{this.state.marketSymbol}]
                 </Dropdown.Toggle>
@@ -114,16 +114,22 @@ class OrderBook extends Component {
                   <Dropdown.Item href="#action-1">Another market</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
-              <p>
-                Last Price:{" "}
-                {this.formmatNumberWithCommas(this.state.lastPrice.toFixed(3))}{" "}
-                / 24h Volume:{" "}
-                {this.formmatNumberWithCommas(this.state.volume24h.toFixed(3))}
-              </p>
-              <p style={{ color: priceChangeColor }}>
-                Price Change:{priceChangeSign}{" "}
-                {this.state.priceChange.toFixed(2)}%
-              </p>
+              <h5>
+                <p>
+                  Last Price:{" "}
+                  {this.formmatNumberWithCommas(
+                    this.state.lastPrice.toFixed(3)
+                  )}{" "}
+                  / Volume:{" "}
+                  {this.formmatNumberWithCommas(
+                    this.state.volume24h.toFixed(3)
+                  )}
+                </p>
+                <p style={{ color: priceChangeColor }}>
+                  Price Change:{priceChangeSign}{" "}
+                  {this.state.priceChange.toFixed(2)}%
+                </p>
+              </h5>
             </div>
           </Col>
         </Row>
@@ -140,17 +146,6 @@ class OrderBook extends Component {
                   <Orders orders={this.props.orders} />
                 </Col>
               </Row>
-              {/* <Row>
-                <Col lg={6} className="asks-container">
-                  <div className="depth-bars-asks-container" />
-                  <AsksBook orderBookAsks={this.props.orderBookAsks} />
-                </Col>
-              </Row>
-              <Row>
-                <Col lg={6} className="bids-container">
-                  <BidsBook orderBookBids={this.props.orderBookBids} />
-                </Col>
-              </Row> */}
             </Container>
           </Col>
           <Col lg={6}>

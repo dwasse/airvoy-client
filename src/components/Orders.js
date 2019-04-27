@@ -45,7 +45,7 @@ class Orders extends Component {
                 background: "rgba(82,108,46, 0.3)",
                 width: `calc(${((100 * row.total) / total).toFixed(0) *
                   self.state.zoom}% - 20px)`,
-                height: "54px"
+                height: "36px"
               }}
             />
             <td className="text-right">
@@ -70,7 +70,7 @@ class Orders extends Component {
               background: "rgba(139,42,2, 0.3)",
               width: `calc(${((100 * row.total) / total).toFixed(0) *
                 self.state.zoom}% - 20px)`,
-              height: "54px"
+              height: "36px"
             }}
           />
           <td className="text-right">
@@ -97,13 +97,13 @@ class Orders extends Component {
             <tr>
               <th />
               <th className="text-right" style={{ width: "50px" }}>
-                <h4>Price</h4>
+                <h5>Price</h5>
               </th>
               <th className="text-right">
-                <h4>Amount</h4>
+                <h5>Amount</h5>
               </th>
               <th className="text-right">
-                <h4>Total</h4>
+                <h5>Total</h5>
               </th>
             </tr>
           </thead>

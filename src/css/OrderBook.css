@@ -12,19 +12,28 @@
 
 h3 {
   color: white;
-  font-family: Inconsolata, monospace;
+  font-family: OCR A Std, monospace;
 }
 
 h4 {
   color: white;
-  font-family: Inconsolata, monospace;
-  font-size: 20;
+  font-family: OCR A Std, monospace;
+}
+
+h5 {
+  color: white;
+  font-family: OCR A Std, monospace;
 }
 
 .orderbook {
   color: white;
   font-family: Inconsolata, monospace;
-  font-size: 10;
+  font-size: 12;
+}
+
+.market-dropdown {
+  font-family: OCR A Std, monospace;
+  margin-bottom: 50px;
 }
 
 .ticker-container h3,
