@@ -42,6 +42,42 @@ h5 {
   margin-bottom: 50px;
 }
 
+.order-type-drawdown {
+  font-family: OCR A Std, monospace;
+  width: 200px;
+  background-color: #4f545e;
+}
+
+.order-form {
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.order-form-label {
+  text-align: left;
+  float: left;
+  margin-right: 10px;
+}
+
+.order-form-input {
+  text-align: right;
+  float: right;
+  width: 50%;
+  background-color: #4f545e;
+  border: none;
+  color: white;
+  font-family: Inconsolata, monospace;
+  font-size: 12;
+}
+
+.order-form-row {
+  /* margin-top: 30px;
+  margin-bottom: 30px; */
+  height: 35px;
+}
+
 .ticker-container h3,
 .ticker-container p {
   color: white;
@@ -71,6 +107,7 @@ h5 {
   /* width: 20%; */
   border: 1px solid white;
   border-radius: 5px;
+  margin-bottom: 30px;
   /*padding-left: 1px;*/
 }
 

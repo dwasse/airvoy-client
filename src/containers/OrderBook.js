@@ -23,6 +23,8 @@ import clearAsksOrderBook from "../store/OrderBook/actions/clear_asks";
 import updateTrades from "../store/Trades/actions/update_trades";
 import { bindActionCreators } from "redux";
 import "../css/OrderBook.css";
+import OrderForm from "../components/OrderForm";
+import OpenOrders from "../components/OpenOrders";
 // require("logo_1.png");
 
 // const websocketURL = "wss://api.bitfinex.com/ws/2";
@@ -134,6 +136,28 @@ class OrderBook extends Component {
           </Col>
         </Row>
         <Row>
+          <Col>
+            <Container className="orderbook-column">
+              <Row>
+                <Col>
+                  <h4>Order Form</h4>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="orderbook-container">
+                  <OrderForm />
+                </Col>
+              </Row>
+              <Row>
+                <h4>Open Orders</h4>
+              </Row>
+              <Row>
+                <Col className="orderbook-container">
+                  <OpenOrders />
+                </Col>
+              </Row>
+            </Container>
+          </Col>
           <Col>
             <Container className="orderbook-column">
               <Row>
