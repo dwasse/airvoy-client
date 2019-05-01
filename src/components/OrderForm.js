@@ -3,6 +3,7 @@ import Table from "react-bootstrap/Table";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 class OrderForm extends Component {
   constructor(props) {
@@ -30,15 +31,16 @@ class OrderForm extends Component {
           <label className="order-form-label" for="orderFormDropdown">
             <div className="orderbook">Type:</div>
           </label>
-          <Dropdown name="orderFormDropdown" className="order-type-dropdown">
-            <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-              Limit
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item href="#action-1">Market</Dropdown.Item>
-              <Dropdown.Item href="#action-2">Synthetic Margin</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+          <DropdownButton
+            name="orderFormDropdown"
+            className="order-type-dropdown"
+            title="Limit"
+          >
+            <Dropdown.Item>
+              Market<br />
+            </Dropdown.Item>
+            <Dropdown.Item>Synthetic Margin</Dropdown.Item>
+          </DropdownButton>
         </tr>
       </form>
     );
