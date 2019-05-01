@@ -37,35 +37,51 @@ class OrderBook extends Component {
     super(props);
 
     this.state = {
-      marketName: "Trump impeachment 2020",
-      marketSymbol: "TRUMP",
+      marketName: "",
+      marketSymbol: "",
       volume24h: 0,
       lastPrice: 0,
       priceChange: 0
     };
-    this.subscribeToAll();
+    this.connectToWebsocket();
     console.log("Props: " + JSON.stringify(props));
   }
 
-  subscribeToAll() {
+  connectToWebsocket() {
     console.log("Subscribing to " + websocketURL + "...");
     const self = this;
     let payloadData = {};
     function onOpen(msg) {
       console.log("Connected to " + websocketURL);
       console.log(msg);
-      var responseText = "getMarket " + marketId;
-      ws.send(responseText);
+      var marketCommand = {
+        command: "getMarkets"
+      };
+      ws.send(JSON.stringify(marketCommand));
+      var orderbookCommand = {
+        command: "getOrderbook",
+        symbol: "TRUMP"
+      };
+      ws.send(JSON.stringify(orderbookCommand));
     }
     function onMessage(msg) {
       payloadData = JSON.parse(msg.data);
-      for (var i = 0; i < payloadData.length; i++) {
-        var entry = payloadData[i];
-        if (entry["Type"] === "Order") {
+      console.log("Received msg: " + JSON.stringify(payloadData));
+      if (payloadData["messageType"] === "getMarkets") {
+        var marketData = JSON.parse(payloadData["content"]);
+        for (var i = 0; i < marketData.length; i++) {
+          var entry = marketData[i];
+          console.log("Got market: " + JSON.stringify(entry));
+        }
+      } else if (payloadData["messageType"] === "getOrderbook") {
+        var orderbookData = JSON.parse(payloadData["content"]["orders"]);
+        var symbol = payloadData["content"]["symbol"];
+        for (var i = 0; i < orderbookData.length; i++) {
+          var entry = orderbookData[i];
           console.log("Adding order: " + JSON.stringify(entry));
           self.props.updateOrders({
-            price: parseFloat(entry["Price"].toFixed(3)),
-            amount: parseFloat(entry["Amount"].toFixed(3))
+            price: parseFloat(entry["price"].toFixed(3)),
+            amount: parseFloat(entry["amount"].toFixed(3))
           });
         }
       }
