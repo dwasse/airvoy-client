@@ -37,17 +37,17 @@ class OrderBook extends Component {
     super(props);
 
     this.state = {
-      marketName: "",
-      marketSymbol: "",
+      marketName: "Trump impeachment 2020",
+      marketSymbol: "TRUMP",
       volume24h: 0,
       lastPrice: 0,
       priceChange: 0
     };
-    this.connectToWebsocket();
+    this.connectToWebsocket(this.state);
     console.log("Props: " + JSON.stringify(props));
   }
 
-  connectToWebsocket() {
+  connectToWebsocket(state) {
     console.log("Subscribing to " + websocketURL + "...");
     const self = this;
     let payloadData = {};
@@ -82,6 +82,16 @@ class OrderBook extends Component {
           self.props.updateOrders({
             price: parseFloat(entry["price"].toFixed(3)),
             amount: parseFloat(entry["amount"].toFixed(3))
+          });
+        }
+      } else if (payloadData["messageType"] === "newOrder") {
+        var orderData = JSON.parse(payloadData["content"]);
+        console.log("Got new order data: " + JSON.stringify(orderData));
+        if (orderData["symbol"] === state.marketSymbol) {
+          console.log("Processing order");
+          self.props.updateOrders({
+            price: parseFloat(orderData["price"].toFixed(3)),
+            amount: parseFloat(orderData["amount"].toFixed(3))
           });
         }
       }
