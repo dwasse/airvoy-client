@@ -16,7 +16,17 @@ class Orders extends Component {
     if (!this.props.orders) {
       return <h2>Loading...</h2>;
     }
+
+    // console.log("Filtering stale orders...");
+    // var renderable_orders = this.props.orders.filter(function(item) {
+    //   return item.amount !== 0;
+    // });
+    // console.log("Filtered orders: " + JSON.stringify(renderable_orders));
+
     return this.props.orders.map(function(row, index) {
+      if (row.amount === 0) {
+        console.log("Found stale order:" + JSON.stringify(row));
+      }
       // if (this.props.orders[index - 1]) {
       //   if (row.amount > 0 && this.props.orders[index - 1].amount < 0) {
       //     // Spread table element

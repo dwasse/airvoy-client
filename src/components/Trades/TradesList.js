@@ -3,6 +3,7 @@ import Table from "react-bootstrap/Table";
 
 class TradesList extends Component {
   renderTradesRows() {
+    console.log("Rendering trades rows...");
     let self = this;
     let counter = 0;
 

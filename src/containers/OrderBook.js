@@ -65,6 +65,7 @@ class OrderBook extends Component {
       ws.send(JSON.stringify(orderbookCommand));
     }
     function onMessage(msg) {
+      console.log("Got msg");
       payloadData = JSON.parse(msg.data);
       console.log("Received msg: " + JSON.stringify(payloadData));
       if (payloadData["messageType"] === "getMarkets") {
@@ -80,20 +81,33 @@ class OrderBook extends Component {
           var entry = orderbookData[i];
           console.log("Adding order: " + JSON.stringify(entry));
           self.props.updateOrders({
+            id: entry["id"],
             price: parseFloat(entry["price"].toFixed(3)),
             amount: parseFloat(entry["amount"].toFixed(3))
           });
         }
-      } else if (payloadData["messageType"] === "newOrder") {
+      } else if (
+        payloadData["messageType"] === "newOrder" ||
+        payloadData["messageType"] === "orderUpdate"
+      ) {
         var orderData = JSON.parse(payloadData["content"]);
-        console.log("Got new order data: " + JSON.stringify(orderData));
+        console.log("Got order update data: " + JSON.stringify(orderData));
         if (orderData["symbol"] === state.marketSymbol) {
           console.log("Processing order");
           self.props.updateOrders({
+            id: orderData["id"],
             price: parseFloat(orderData["price"].toFixed(3)),
             amount: parseFloat(orderData["amount"].toFixed(3))
           });
         }
+      } else if (payloadData["messageType"] === "newTrade") {
+        var tradeData = JSON.parse(payloadData["content"]);
+        console.log("Got new trade update: " + JSON.stringify(payloadData));
+        self.props.updateTrades({
+          time: tradeData["timestamp"],
+          price: parseFloat(tradeData["price"].toFixed(3)),
+          amount: parseFloat(tradeData["amount"].toFixed(3))
+        });
       }
     }
     function onClose(msg) {
@@ -127,6 +141,25 @@ class OrderBook extends Component {
 
     let priceChangeSign = this.state.priceChange >= 0 ? " +" : " -";
     priceChangeSign = this.state.priceChange === 0 ? "" : priceChangeSign;
+    console.log("Rendering OrderBook...");
+    var renderableOrders = [];
+    var renderableOrderIds = [];
+    for (var i = 0; i < this.props.orders.length; i++) {
+      var currentOrder = this.props.orders[i];
+      if (
+        currentOrder.amount !== 0 &&
+        !renderableOrderIds.includes(currentOrder.id)
+      ) {
+        renderableOrderIds.unshift(currentOrder.id);
+        renderableOrders.unshift(currentOrder);
+        console.log(
+          "Added order to renderable orders: " + JSON.stringify(currentOrder)
+        );
+      }
+    }
+    renderableOrders.sort(function(a, b) {
+      return b.price - a.price;
+    });
 
     return (
       <Container fluid={true}>
@@ -193,7 +226,7 @@ class OrderBook extends Component {
               </Row>
               <Row>
                 <Col className="orderbook-container">
-                  <Orders orders={this.props.orders} />
+                  <Orders orders={renderableOrders} />
                 </Col>
               </Row>
             </Container>
