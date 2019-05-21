@@ -72,10 +72,10 @@ class Orders extends Component {
               <div className="orderbook">{row.price}</div>
             </td>
             <td className="text-right">
-              <div className="orderbook">{row.amount}</div>
+              <div className="orderbook">{row.amount.toFixed(3)}</div>
             </td>
             <td className="text-right">
-              <div className="orderbook">{row.total}</div>
+              <div className="orderbook">{row.total.toFixed(3)}</div>
             </td>
           </tr>
         );
@@ -97,10 +97,10 @@ class Orders extends Component {
             <div className="orderbook">{row.price}</div>
           </td>
           <td className="text-right">
-            <div className="orderbook">{Math.abs(row.amount)}</div>
+            <div className="orderbook">{Math.abs(row.amount).toFixed(3)}</div>
           </td>
           <td className="text-right">
-            <div className="orderbook">{row.total}</div>
+            <div className="orderbook">{row.total.toFixed(3)}</div>
           </td>
         </tr>
       );

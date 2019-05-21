@@ -37,8 +37,8 @@ class OrderBook extends Component {
     super(props);
 
     this.state = {
-      marketName: "Will there be an earthquake in California in 2019?",
-      marketSymbol: "QUAKE",
+      marketName: "Will Donald Trump be impeached before January 1, 2021?",
+      marketSymbol: "TRUMP",
       volume24h: 0,
       lastPrice: 0,
       priceChange: 0
