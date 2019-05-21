@@ -4,6 +4,8 @@ export default function(state = [], action) {
       let newState = action.newOrderData;
       let priceExists = false;
 
+      console.log("Adding new order data: " + JSON.stringify(newState));
+
       if (state.length > 0) {
         state.map(function(row, index) {
           if (
@@ -44,63 +46,138 @@ export default function(state = [], action) {
         });
       }
 
+      let newStateCombined = [...state, newState];
+      //Sort from lowest to highest price before returning.
+      newStateCombined.sort(function(a, b) {
+        return b.price - a.price;
+      });
+
+      if (newStateCombined.length > 50) {
+        newStateCombined.pop();
+      }
+
+      var bidsDict = {};
+      var asksDict = {};
+      var bidPrices = [];
+      var askPrices = [];
+      var includedOrders = [];
+
+      console.log("newStateCombined: " + JSON.stringify(newStateCombined));
+
+      if (newStateCombined.length > 0) {
+        newStateCombined.map(function(row, index) {
+          if (!row) {
+            newStateCombined.splice(index, 1);
+          } else {
+            if (row.amount > 0 && !includedOrders.includes(row.id)) {
+              console.log(
+                "Inspecting bidsDict for bid: " + JSON.stringify(row)
+              );
+              if (row.price in bidsDict) {
+                bidsDict[row.price] += row.amount;
+                console.log(
+                  "Added to bids dict for price " +
+                    row.price +
+                    ": " +
+                    Math.abs(row.amount)
+                );
+              } else {
+                console.log(
+                  "Setting bid for price " +
+                    row.price +
+                    " to " +
+                    Math.abs(row.amount)
+                );
+                bidsDict[row.price] = row.amount;
+                bidPrices.unshift(row.price);
+              }
+              console.log("After bids inspect: " + JSON.stringify(bidsDict));
+            } else if (row.amount < 0 && !includedOrders.includes(row.id)) {
+              console.log(
+                "Inspecting asksDict for ask: " + JSON.stringify(row)
+              );
+              if (row.price in asksDict) {
+                asksDict[row.price] += Math.abs(row.amount);
+                console.log(
+                  "Added to asks dict for price " +
+                    row.price +
+                    ": " +
+                    Math.abs(row.amount)
+                );
+              } else {
+                console.log(
+                  "Setting ask for price " +
+                    row.price +
+                    " to " +
+                    Math.abs(row.amount)
+                );
+                asksDict[row.price] = Math.abs(row.amount);
+                askPrices.unshift(row.price);
+              }
+              console.log("After asks inspect: " + JSON.stringify(asksDict));
+            }
+            includedOrders.unshift(row.id);
+            console.log("Added " + row.id + " to includedOrders");
+          }
+        });
+        console.log("newStateCombined: " + JSON.stringify(newStateCombined));
+        bidPrices.sort(function(a, b) {
+          return b - a;
+        });
+        askPrices.sort(function(a, b) {
+          return a - b;
+        });
+        console.log("bidsDict: " + JSON.stringify(bidsDict));
+        console.log("asksDict: " + JSON.stringify(asksDict));
+        console.log("bidPrices: " + JSON.stringify(bidPrices));
+        console.log("askPrices: " + JSON.stringify(askPrices));
+        newStateCombined.map(function(row, index) {
+          console.log("Checking row: " + JSON.stringify(row));
+          if (row.amount > 0) {
+            var bidIndex = bidPrices.indexOf(row.price);
+            console.log("bidIndex: " + bidIndex);
+            if (bidIndex > 0 && bidIndex < bidPrices.length) {
+              console.log(
+                "Adding bid row " +
+                  JSON.stringify(row) +
+                  " to previous row total " +
+                  bidsDict[bidPrices[bidIndex - 1]]
+              );
+              row.total =
+                parseFloat(row.amount) +
+                parseFloat(bidsDict[bidPrices[bidIndex - 1]]);
+            } else {
+              row.total = row.amount;
+            }
+          } else if (row.amount < 0) {
+            var askIndex = askPrices.indexOf(row.price);
+            console.log("askIndex: " + askIndex);
+            if (askIndex > 0 && askIndex < askPrices.length) {
+              console.log(
+                "Adding ask row " +
+                  JSON.stringify(row) +
+                  " to previous row total " +
+                  asksDict[askPrices[askIndex - 1]]
+              );
+              row.total =
+                Math.abs(parseFloat(row.amount)) +
+                Math.abs(parseFloat(asksDict[askPrices[askIndex - 1]]));
+            } else {
+              row.total = Math.abs(row.amount);
+            }
+          }
+        });
+      }
+
       if (priceExists === true) {
         priceExists = false;
         return state.slice();
       } else {
-        let newStateCombined = [...state, newState];
-        //Sort from lowest to highest price before returning.
-        newStateCombined.sort(function(a, b) {
-          return b.price - a.price;
-        });
-
-        if (newStateCombined.length > 50) {
-          newStateCombined.pop();
-        }
-
-        if (newStateCombined.length > 0) {
-          newStateCombined.map(function(row, index) {
-            if (!row || row.count === 0) {
-              newStateCombined.splice(index, 1);
-            }
-          });
-
-          newStateCombined.map(function(row, index) {
-            if (row.amount > 0) {
-              if (
-                newStateCombined[index - 1] &&
-                newStateCombined[index - 1].total &&
-                newStateCombined[index - 1].amount > 0
-              ) {
-                row.total =
-                  parseFloat(newStateCombined[index - 1].total) +
-                  parseFloat(row.amount);
-              } else {
-                row.total = row.amount;
-              }
-            } else if (row.amount < 0) {
-              if (
-                newStateCombined[index + 1] &&
-                newStateCombined[index + 1].total &&
-                newStateCombined[index + 1].amount < 0
-              ) {
-                row.total =
-                  parseFloat(newStateCombined[index + 1].total) +
-                  Math.abs(parseFloat(row.amount));
-              } else {
-                row.total = Math.abs(row.amount);
-              }
-            }
-          });
-        }
-
         return newStateCombined;
       }
-      break;
 
     case "CLEAR_ORDERS":
       return action.newOrderData;
-      break;
 
     default:
       return state.slice();
