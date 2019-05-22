@@ -106,7 +106,8 @@ class OrderBook extends Component {
         self.props.updateTrades({
           time: tradeData["timestamp"],
           price: parseFloat(tradeData["price"].toFixed(3)),
-          amount: parseFloat(tradeData["amount"].toFixed(3))
+          amount: parseFloat(tradeData["amount"].toFixed(3)),
+          id: tradeData["id"]
         });
       }
     }

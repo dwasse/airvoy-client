@@ -5,7 +5,6 @@ export default function(state = [], action) {
     case "UPDATE_TRADES":
       let newState = action.newTradesData;
       console.log("Updating trades with newState: " + JSON.stringify(newState));
-      let priceExists = false;
       //   let newStateCombined = [...state, ...newState];
       let newStateCombined = [...state, newState];
       //Sort from most recent to last order made.
@@ -23,7 +22,6 @@ export default function(state = [], action) {
       });
 
       return newStateCombined;
-      break;
 
     default:
       //returns a copy of the state object to trigger state change.

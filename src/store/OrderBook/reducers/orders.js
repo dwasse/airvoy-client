@@ -28,9 +28,6 @@ export default function(state = [], action) {
               );
               state[index].amount = newState.amount;
             }
-            console.log(
-              "Returning state slice: " + JSON.stringify(state.slice())
-            );
             return state.slice();
           }
           if (
@@ -82,12 +79,6 @@ export default function(state = [], action) {
                     Math.abs(row.amount)
                 );
               } else {
-                console.log(
-                  "Setting bid for price " +
-                    row.price +
-                    " to " +
-                    Math.abs(row.amount)
-                );
                 bidsDict[row.price] = row.amount;
                 bidPrices.unshift(row.price);
               }
@@ -105,12 +96,6 @@ export default function(state = [], action) {
                     Math.abs(row.amount)
                 );
               } else {
-                console.log(
-                  "Setting ask for price " +
-                    row.price +
-                    " to " +
-                    Math.abs(row.amount)
-                );
                 asksDict[row.price] = Math.abs(row.amount);
                 askPrices.unshift(row.price);
               }
@@ -137,12 +122,6 @@ export default function(state = [], action) {
             var bidIndex = bidPrices.indexOf(row.price);
             console.log("bidIndex: " + bidIndex);
             if (bidIndex > 0 && bidIndex < bidPrices.length) {
-              console.log(
-                "Adding bid row " +
-                  JSON.stringify(row) +
-                  " to previous row total " +
-                  bidsDict[bidPrices[bidIndex - 1]]
-              );
               row.total =
                 parseFloat(row.amount) +
                 parseFloat(bidsDict[bidPrices[bidIndex - 1]]);
@@ -153,12 +132,6 @@ export default function(state = [], action) {
             var askIndex = askPrices.indexOf(row.price);
             console.log("askIndex: " + askIndex);
             if (askIndex > 0 && askIndex < askPrices.length) {
-              console.log(
-                "Adding ask row " +
-                  JSON.stringify(row) +
-                  " to previous row total " +
-                  asksDict[askPrices[askIndex - 1]]
-              );
               row.total =
                 Math.abs(parseFloat(row.amount)) +
                 Math.abs(parseFloat(asksDict[askPrices[askIndex - 1]]));

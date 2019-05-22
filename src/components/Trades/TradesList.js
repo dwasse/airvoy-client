@@ -13,17 +13,17 @@ class TradesList extends Component {
     }
     return this.props.tradesList.map(function(row, index) {
       console.log("Rendering trade row: " + JSON.stringify(row));
-      let uniqueId = row.period + row.timestamp + row.amount + counter;
-      uniqueId = uniqueId;
-      if (self.props.tradesList[index - 1]) {
-        uniqueId =
-          uniqueId +
-          (parseFloat(self.props.tradesList[index - 1].amount) +
-            parseFloat(self.props.tradesList[index - 1].period) +
-            self.props.tradesList[index - 1].timestamp);
-        uniqueId = uniqueId + counter;
-      }
-      counter++;
+      let uniqueId = row.id;
+      // uniqueId = uniqueId;
+      // if (self.props.tradesList[index - 1]) {
+      //   uniqueId =
+      //     uniqueId +
+      //     (parseFloat(self.props.tradesList[index - 1].amount) +
+      //       parseFloat(self.props.tradesList[index - 1].period) +
+      //       self.props.tradesList[index - 1].timestamp);
+      //   uniqueId = uniqueId + counter;
+      // }
+      // counter++;
 
       let amountAbs = Math.abs(row.amount).toFixed(4);
       let tradeType = row.amount > 0 ? "buy" : "sell";
