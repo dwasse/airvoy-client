@@ -116,27 +116,61 @@ export default function(state = [], action) {
         console.log("asksDict: " + JSON.stringify(asksDict));
         console.log("bidPrices: " + JSON.stringify(bidPrices));
         console.log("askPrices: " + JSON.stringify(askPrices));
+        var bidTotals = {};
+        var askTotals = {};
+        var lastBidTotal = 0;
+        var lastAskTotal = 0;
+        for (var i = 0; i < bidPrices.length; i++) {
+          var bid = bidPrices[i];
+          if (bid in bidsDict) {
+            lastBidTotal += bidsDict[bid];
+            bidTotals[bid] = lastBidTotal;
+          } else {
+            console.log("Bid price " + bid + " not in bidsDict");
+          }
+        }
+        for (var j = 0; j < askPrices.length; j++) {
+          var ask = askPrices[j];
+          if (ask in asksDict) {
+            lastAskTotal += asksDict[ask];
+            askTotals[ask] = lastAskTotal;
+          } else {
+            console.log("Ask price " + ask + " not in asksDict");
+          }
+        }
+        console.log("bidTotals: " + JSON.stringify(bidTotals));
+        console.log("askTotals: " + JSON.stringify(askTotals));
         newStateCombined.map(function(row, index) {
           console.log("Checking row: " + JSON.stringify(row));
           if (row.amount > 0) {
-            var bidIndex = bidPrices.indexOf(row.price);
-            console.log("bidIndex: " + bidIndex);
-            if (bidIndex > 0 && bidIndex < bidPrices.length) {
-              row.total =
-                parseFloat(row.amount) +
-                parseFloat(bidsDict[bidPrices[bidIndex - 1]]);
+            // var bidIndex = bidPrices.indexOf(row.price);
+            // console.log("bidIndex: " + bidIndex);
+            // if (bidIndex > 0 && bidIndex < bidPrices.length) {
+            //   row.total =
+            //     parseFloat(row.amount) +
+            //     parseFloat(bidsDict[bidPrices[bidIndex - 1]]);
+            // } else {
+            //   row.total = row.amount;
+            // }
+            if (row.price in bidTotals) {
+              row.total = bidTotals[row.price];
             } else {
-              row.total = row.amount;
+              console.log("Bid price " + row.price + " not in bidTotals");
             }
           } else if (row.amount < 0) {
-            var askIndex = askPrices.indexOf(row.price);
-            console.log("askIndex: " + askIndex);
-            if (askIndex > 0 && askIndex < askPrices.length) {
-              row.total =
-                Math.abs(parseFloat(row.amount)) +
-                Math.abs(parseFloat(asksDict[askPrices[askIndex - 1]]));
+            // var askIndex = askPrices.indexOf(row.price);
+            // console.log("askIndex: " + askIndex);
+            // if (askIndex > 0 && askIndex < askPrices.length) {
+            //   row.total =
+            //     Math.abs(parseFloat(row.amount)) +
+            //     Math.abs(parseFloat(asksDict[askPrices[askIndex - 1]]));
+            // } else {
+            //   row.total = Math.abs(row.amount);
+            // }
+            if (row.price in askTotals) {
+              row.total = askTotals[row.price];
             } else {
-              row.total = Math.abs(row.amount);
+              console.log("Ask price " + row.price + " not in askTotals");
             }
           }
         });
