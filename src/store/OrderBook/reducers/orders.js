@@ -14,10 +14,6 @@ export default function(state = [], action) {
             newState.id &&
             state[index].id === newState.id
           ) {
-            console.log("Order " + newState.id + " exists");
-            console.log(
-              "State before clearing duplicate orders: " + JSON.stringify(state)
-            );
             for (i = 0; i < state.length; i++) {
               let currentOrder = state[i];
               if (!orderIds.includes(currentOrder.id)) {
@@ -30,29 +26,8 @@ export default function(state = [], action) {
               "State after clearing duplicate orders: " + JSON.stringify(state)
             );
             if (newState.amount === 0 || orderIds.includes(newState.id)) {
-              console.log("Removing order " + newState.id);
-              console.log(
-                "State before splice: " +
-                  JSON.stringify(state) +
-                  ", length " +
-                  state.length
-              );
               state.splice(index, 1);
-              console.log(
-                "State after splice: " +
-                  JSON.stringify(state) +
-                  ", length " +
-                  state.length
-              );
             } else {
-              console.log(
-                "Updating order " +
-                  newState.id +
-                  " amount from " +
-                  state[index].amount +
-                  " to " +
-                  newState.amount
-              );
               state[index].amount = newState.amount;
             }
             return state.slice();
@@ -68,10 +43,6 @@ export default function(state = [], action) {
             state[index].amount += newState.amount;
           }
         });
-        if (!orderIds.includes(newState.id)) {
-          console.log("Adding id " + newState.id + " to order ids");
-          orderIds.unshift(newState.id);
-        }
       }
 
       let newStateCombined = [...state, newState];
@@ -89,8 +60,6 @@ export default function(state = [], action) {
       var bidPrices = [];
       var askPrices = [];
       var includedOrders = [];
-
-      console.log("newStateCombined: " + JSON.stringify(newStateCombined));
 
       if (newStateCombined.length > 0) {
         newStateCombined.map(function(row, index) {
@@ -174,30 +143,12 @@ export default function(state = [], action) {
         newStateCombined.map(function(row, index) {
           console.log("Checking row: " + JSON.stringify(row));
           if (row.amount > 0) {
-            // var bidIndex = bidPrices.indexOf(row.price);
-            // console.log("bidIndex: " + bidIndex);
-            // if (bidIndex > 0 && bidIndex < bidPrices.length) {
-            //   row.total =
-            //     parseFloat(row.amount) +
-            //     parseFloat(bidsDict[bidPrices[bidIndex - 1]]);
-            // } else {
-            //   row.total = row.amount;
-            // }
             if (row.price in bidTotals) {
               row.total = bidTotals[row.price];
             } else {
               console.log("Bid price " + row.price + " not in bidTotals");
             }
           } else if (row.amount < 0) {
-            // var askIndex = askPrices.indexOf(row.price);
-            // console.log("askIndex: " + askIndex);
-            // if (askIndex > 0 && askIndex < askPrices.length) {
-            //   row.total =
-            //     Math.abs(parseFloat(row.amount)) +
-            //     Math.abs(parseFloat(asksDict[askPrices[askIndex - 1]]));
-            // } else {
-            //   row.total = Math.abs(row.amount);
-            // }
             if (row.price in askTotals) {
               row.total = askTotals[row.price];
             } else {

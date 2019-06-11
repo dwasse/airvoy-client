@@ -11,7 +11,6 @@ class Orders extends Component {
   }
 
   renderOrders() {
-    console.log("Rendering orders: " + JSON.stringify(this.props.orders));
     let self = this;
     if (!this.props.orders) {
       return <h2>Loading...</h2>;
@@ -25,7 +24,6 @@ class Orders extends Component {
 
     return this.props.orders.map(function(row, index) {
       if (row.amount === 0) {
-        console.log("Found stale order:" + JSON.stringify(row));
       }
       // if (this.props.orders[index - 1]) {
       //   if (row.amount > 0 && this.props.orders[index - 1].amount < 0) {
@@ -46,12 +44,12 @@ class Orders extends Component {
         }
       }
       var total = askTotal > bidTotal ? askTotal : bidTotal;
-      console.log(
-        "Total: " +
-          total +
-          ", this width: " +
-          ((100 * row.total) / total).toFixed(0)
-      );
+      // console.log(
+      //   "Total: " +
+      //     total +
+      //     ", this width: " +
+      //     ((100 * row.total) / total).toFixed(0)
+      // );
 
       if (row.amount > 0) {
         return (

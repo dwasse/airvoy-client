@@ -3,8 +3,6 @@ import Table from "react-bootstrap/Table";
 
 class TradesList extends Component {
   renderTradesRows() {
-    console.log("Rendering trades rows...");
-    console.log("Trades list: " + JSON.stringify(this.props.tradesList));
     let self = this;
     let counter = 0;
 
@@ -12,7 +10,6 @@ class TradesList extends Component {
       return <h2>Loading...</h2>;
     }
     return this.props.tradesList.map(function(row, index) {
-      console.log("Rendering trade row: " + JSON.stringify(row));
       let uniqueId = row.id;
       // uniqueId = uniqueId;
       // if (self.props.tradesList[index - 1]) {

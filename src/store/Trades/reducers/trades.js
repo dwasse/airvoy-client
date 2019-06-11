@@ -4,13 +4,8 @@ export default function(state = [], action) {
   switch (action.type) {
     case "UPDATE_TRADES":
       let newState = action.newTradesData;
-      console.log("Updating trades with newState: " + JSON.stringify(newState));
       //   let newStateCombined = [...state, ...newState];
       let newStateCombined = [...state, newState];
-      //Sort from most recent to last order made.
-      newStateCombined.sort(function(a, b) {
-        return b.timestamp - a.timestamp;
-      });
 
       if (newStateCombined.length > 50) {
         newStateCombined.pop();
@@ -18,8 +13,8 @@ export default function(state = [], action) {
 
       newStateCombined.map(function(trade) {
         let date = new Date();
-        console.log("Setting date to " + newState.time);
-        date.setTime(newState.time);
+        console.log("Setting date to " + trade.time);
+        date.setTime(trade.time);
         let formattedTime =
           date.getUTCHours() +
           ":" +
@@ -28,6 +23,11 @@ export default function(state = [], action) {
           date.getUTCSeconds();
         console.log("Formatted time: " + formattedTime);
         trade.formattedTimestamp = formattedTime;
+      });
+
+      //Sort from most recent to last order made.
+      newStateCombined.sort(function(a, b) {
+        return b.time - a.time;
       });
 
       return newStateCombined;
