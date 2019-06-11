@@ -7,6 +7,7 @@ export default function(state = [], action) {
       console.log("Adding new order data: " + JSON.stringify(newState));
 
       if (state.length > 0) {
+        let orderIds = [];
         state.map(function(row, index) {
           if (
             state[index].id &&
@@ -14,9 +15,35 @@ export default function(state = [], action) {
             state[index].id === newState.id
           ) {
             console.log("Order " + newState.id + " exists");
-            if (newState.amount === 0) {
+            console.log(
+              "State before clearing duplicate orders: " + JSON.stringify(state)
+            );
+            for (i = 0; i < state.length; i++) {
+              let currentOrder = state[i];
+              if (!orderIds.includes(currentOrder.id)) {
+                orderIds.unshift(currentOrder.id);
+              } else {
+                state.splice(i, 1);
+              }
+            }
+            console.log(
+              "State after clearing duplicate orders: " + JSON.stringify(state)
+            );
+            if (newState.amount === 0 || orderIds.includes(newState.id)) {
               console.log("Removing order " + newState.id);
+              console.log(
+                "State before splice: " +
+                  JSON.stringify(state) +
+                  ", length " +
+                  state.length
+              );
               state.splice(index, 1);
+              console.log(
+                "State after splice: " +
+                  JSON.stringify(state) +
+                  ", length " +
+                  state.length
+              );
             } else {
               console.log(
                 "Updating order " +
@@ -41,6 +68,10 @@ export default function(state = [], action) {
             state[index].amount += newState.amount;
           }
         });
+        if (!orderIds.includes(newState.id)) {
+          console.log("Adding id " + newState.id + " to order ids");
+          orderIds.unshift(newState.id);
+        }
       }
 
       let newStateCombined = [...state, newState];
@@ -177,6 +208,7 @@ export default function(state = [], action) {
       }
 
       if (priceExists === true) {
+        console.log("priceExists true");
         priceExists = false;
         return state.slice();
       } else {

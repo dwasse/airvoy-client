@@ -99,6 +99,9 @@ class OrderBook extends Component {
             price: parseFloat(orderData["price"].toFixed(3)),
             amount: parseFloat(orderData["amount"].toFixed(3))
           });
+          if (orderData["amount"] > 5) {
+            console.log("Got large order:" + JSON.stringify(orderData));
+          }
         }
       } else if (payloadData["messageType"] === "newTrade") {
         var tradeData = JSON.parse(payloadData["content"]);

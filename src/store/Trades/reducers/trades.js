@@ -17,8 +17,17 @@ export default function(state = [], action) {
       }
 
       newStateCombined.map(function(trade) {
-        let now = moment().format("HH:mm:ss");
-        trade.formattedTimestamp = now;
+        let date = new Date();
+        console.log("Setting date to " + newState.time);
+        date.setTime(newState.time);
+        let formattedTime =
+          date.getUTCHours() +
+          ":" +
+          date.getUTCMinutes() +
+          ":" +
+          date.getUTCSeconds();
+        console.log("Formatted time: " + formattedTime);
+        trade.formattedTimestamp = formattedTime;
       });
 
       return newStateCombined;
