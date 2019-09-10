@@ -1,5 +1,5 @@
 
-An initial implementation of a web client for the airvoy platform.
+A basic web interface for a binary options orderbook.
 
 
 -----------------------------------------------------------------------------------------------------
